@@ -97,7 +97,7 @@ public class MyHttpServer {
         byteBuffer.flip();
         byte[] array = byteBuffer.array();
         String str = new String(array, 0, n);
-        System.out.println("str123 = " + str);
+        System.out.println("str1234 = " + str);
 //        logger.info("Receive request from client:----------------");
 //        logger.info(str);
     }
