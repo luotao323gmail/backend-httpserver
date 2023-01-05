@@ -55,7 +55,7 @@ public class MyHttpServer {
                     }
                     if (key.isReadable()) {
                         handleReadable(key);
-                        // 重要！！ 将SelectionKey切换为写模式
+                        // 重要！！ 将SelectionKey切换为写模式123
                         key.interestOps(SelectionKey.OP_WRITE);
                     }
                     if (key.isWritable()) {
