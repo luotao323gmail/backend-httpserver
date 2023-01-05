@@ -97,6 +97,7 @@ public class MyHttpServer {
         byteBuffer.flip();
         byte[] array = byteBuffer.array();
         String str = new String(array, 0, n);
+        System.out.println(str);
 //        logger.info("Receive request from client:----------------");
 //        logger.info(str);
     }
@@ -107,7 +108,7 @@ public class MyHttpServer {
         client.configureBlocking(false);
         ByteBuffer byteBuffer = (ByteBuffer) key.attachment();
 
-        String contenxt = "Hello, world";
+        String contenxt = "Hello, world1";
         StringBuilder sb = new StringBuilder();
         sb.append("HTTP/1.1 200 OK");
         sb.append(CRLF);
