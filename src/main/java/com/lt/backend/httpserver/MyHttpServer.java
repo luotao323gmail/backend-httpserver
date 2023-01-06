@@ -120,8 +120,6 @@ public class MyHttpServer {
 
     public static void main(String[] args) throws Exception {
         new MyHttpServer().exeute();
-        while (true) {
-            Thread.sleep(1);
-        }
+        System.in.read();
     }
 }

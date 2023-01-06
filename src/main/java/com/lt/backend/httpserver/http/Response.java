@@ -40,7 +40,7 @@ public class Response {
         sb.append(CRLF);
         sb.append("Connection:Close");
         sb.append(CRLF);
-        sb.append("Content-Type:text/html; charset=UTF-8");
+        sb.append("Content-Type:text/html; charset=").append(getCharset().toString());
         sb.append(CRLF);
         sb.append("Content-Length: ").append(bytes.length);
         sb.append(CRLF);
