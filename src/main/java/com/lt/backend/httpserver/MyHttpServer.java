@@ -118,39 +118,6 @@ public class MyHttpServer {
 
     }
 
-//    private void handleWritable(SelectionKey key) throws IOException {
-////        logger.info("handleWritable");
-//        SocketChannel client = (SocketChannel) key.channel();
-//        client.configureBlocking(false);
-////        ByteBuffer byteBuffer = (ByteBuffer) key.attachment();
-//        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-//        Response response = new Response();
-//        response.println("<html><body>Welcome!</body></html>");
-//        byte[] bytes = response.buildResponse();
-//        String contenxt = "Hello, world1";
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("HTTP/1.1 200 OK");
-//        sb.append(CRLF);
-//        sb.append("Date:Sun, 21 Apr 2013 15:12:46 GMT");
-//        sb.append(CRLF);
-//        sb.append("Server:Apache");
-//        sb.append(CRLF);
-//        sb.append("Connection:Close");
-//        sb.append(CRLF);
-//        sb.append("Content-Type:text/plain; charset=ISO-8859-1");
-//        sb.append(CRLF);
-//        sb.append("Content-Length: " + contenxt.length());
-//        sb.append(CRLF);
-//        sb.append(CRLF);
-//        sb.append(contenxt); // 内容为Hello, world
-//        sb.append(CRLF);
-//        String str2 = sb.toString();
-//        byteBuffer.put(bytes);
-//        byteBuffer.flip();
-//        // 输出HTTP响应报文
-//        client.write(byteBuffer);
-//    }
-
     public static void main(String[] args) throws Exception {
         new MyHttpServer().exeute();
         while (true) {
