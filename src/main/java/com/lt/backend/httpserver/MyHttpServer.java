@@ -1,5 +1,8 @@
 package com.lt.backend.httpserver;
 
+import com.lt.backend.httpserver.http.Response;
+import com.lt.backend.httpserver.process.HttpServiceFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -11,16 +14,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 
-
 /**
  * 一个最简单的HTTP服务器。 <br>
  * 不管浏览器请求什么，都返回Hello, world
  */
 public class MyHttpServer {
-    public static final int DEFAULT_PORT = 8087;
+    public static final int DEFAULT_PORT = 28080;
 
     public static final String CRLF = "\r\n";
-
 
 
     public void exeute() throws IOException {
@@ -64,6 +65,7 @@ public class MyHttpServer {
                         key.channel().close();
                     }
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     key.cancel();
                 }
             }
@@ -96,43 +98,63 @@ public class MyHttpServer {
         // 打印HTTP请求报文出来
         byteBuffer.flip();
         byte[] array = byteBuffer.array();
-        String str = new String(array, 0, n);
-        System.out.println("str1234 = " + str);
-//        logger.info("Receive request from client:----------------");
-//        logger.info(str);
+        byte[] responseBody = HttpServiceFactory.executeHttpServer(array);
+       key.attach(responseBody);
     }
 
     private void handleWritable(SelectionKey key) throws IOException {
 //        logger.info("handleWritable");
         SocketChannel client = (SocketChannel) key.channel();
         client.configureBlocking(false);
-        ByteBuffer byteBuffer = (ByteBuffer) key.attachment();
+        Object response = key.attachment();
 
-        String contenxt = "Hello, world1";
-        StringBuilder sb = new StringBuilder();
-        sb.append("HTTP/1.1 200 OK");
-        sb.append(CRLF);
-        sb.append("Date:Sun, 21 Apr 2013 15:12:46 GMT");
-        sb.append(CRLF);
-        sb.append("Server:Apache");
-        sb.append(CRLF);
-        sb.append("Connection:Close");
-        sb.append(CRLF);
-        sb.append("Content-Type:text/plain; charset=ISO-8859-1");
-        sb.append(CRLF);
-        sb.append("Content-Length: " + contenxt.length());
-        sb.append(CRLF);
-        sb.append(CRLF);
-        sb.append(contenxt); // 内容为Hello, world
-        sb.append(CRLF);
-        String str2 = sb.toString();
-        byteBuffer.put(str2.getBytes());
-        byteBuffer.flip();
-        // 输出HTTP响应报文
-        client.write(byteBuffer);
+        if (response instanceof byte[]) {
+            byte[] responseBytes = (byte[]) response;
+            ByteBuffer out = ByteBuffer.allocate(responseBytes.length);
+            out.put(responseBytes);
+            out.flip();
+            client.write(out);
+        }
+
     }
 
-    public static void main(String[] args) throws IOException {
+//    private void handleWritable(SelectionKey key) throws IOException {
+////        logger.info("handleWritable");
+//        SocketChannel client = (SocketChannel) key.channel();
+//        client.configureBlocking(false);
+////        ByteBuffer byteBuffer = (ByteBuffer) key.attachment();
+//        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+//        Response response = new Response();
+//        response.println("<html><body>Welcome!</body></html>");
+//        byte[] bytes = response.buildResponse();
+//        String contenxt = "Hello, world1";
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("HTTP/1.1 200 OK");
+//        sb.append(CRLF);
+//        sb.append("Date:Sun, 21 Apr 2013 15:12:46 GMT");
+//        sb.append(CRLF);
+//        sb.append("Server:Apache");
+//        sb.append(CRLF);
+//        sb.append("Connection:Close");
+//        sb.append(CRLF);
+//        sb.append("Content-Type:text/plain; charset=ISO-8859-1");
+//        sb.append(CRLF);
+//        sb.append("Content-Length: " + contenxt.length());
+//        sb.append(CRLF);
+//        sb.append(CRLF);
+//        sb.append(contenxt); // 内容为Hello, world
+//        sb.append(CRLF);
+//        String str2 = sb.toString();
+//        byteBuffer.put(bytes);
+//        byteBuffer.flip();
+//        // 输出HTTP响应报文
+//        client.write(byteBuffer);
+//    }
+
+    public static void main(String[] args) throws Exception {
         new MyHttpServer().exeute();
+        while (true) {
+            Thread.sleep(1);
+        }
     }
 }
