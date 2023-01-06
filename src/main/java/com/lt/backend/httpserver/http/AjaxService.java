@@ -11,5 +11,10 @@ public class AjaxService implements Service{
         response.setContentType("application/json");
 
         response.println("{\"username\":\"wangwu\",\"password\":\"2\"}");
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

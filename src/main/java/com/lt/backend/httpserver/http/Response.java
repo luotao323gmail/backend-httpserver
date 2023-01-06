@@ -9,13 +9,16 @@ import java.nio.charset.StandardCharsets;
 
 public class Response {
 
-    public static final String CRLF = "\r\n";
+    public static final String CRLF = System.lineSeparator();
 
+    private int httpCode = 200;
+
+    private String httpMessage = "ok";
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
     PrintWriter printWriter = new PrintWriter(byteArrayOutputStream);
 
-    public void println(String str){
+    public void println(String str) {
         printWriter.println(str);
     }
 
@@ -29,20 +32,29 @@ public class Response {
         this.contentType = contentType;
     }
 
-    public Charset getCharset(){
-       return StandardCharsets.UTF_8;
+    public Charset getCharset() {
+        return StandardCharsets.UTF_8;
     }
 
-    public byte[] buildResponse(){
+    public int getHttpCode() {
+        return httpCode;
+    }
 
+    public String getHttpMessage() {
+        return httpMessage;
+    }
+
+    public byte[] getResponseByteArray() {
         printWriter.flush();
         printWriter.close();
         byte[] bytes = byteArrayOutputStream.toByteArray();
+        return bytes;
+    }
 
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    public byte[] buildResponse() {
+        byte[] bodyArr = getResponseByteArray();
         StringBuilder sb = new StringBuilder();
-        sb.append("HTTP/1.1 200 OK");
+        sb.append("HTTP/1.1 " + getHttpCode() + " " + getHttpMessage());
         sb.append(CRLF);
         sb.append("Date:Sun, 21 Apr 2013 15:12:46 GMT");
         sb.append(CRLF);
@@ -52,17 +64,14 @@ public class Response {
         sb.append(CRLF);
         sb.append("Content-Type:").append(getContentType());
         sb.append(CRLF);
-        sb.append("Content-Length: ").append(bytes.length);
+        sb.append("Content-Length: ").append(bodyArr.length);
         sb.append(CRLF);
         sb.append(CRLF);
-        try {
-            byteArrayOutputStream.write(sb.toString().getBytes(getCharset()));
-            byteArrayOutputStream.write(bytes); // 内容为Hello, world
-            byteArrayOutputStream.write(CRLF.getBytes(getCharset()));
-            return byteArrayOutputStream.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        byte[] headerArr = sb.toString().getBytes(getCharset());
+        ByteBuffer byteBuffer = ByteBuffer.allocate(headerArr.length + bodyArr.length + CRLF.getBytes().length);
+        byteBuffer.put(headerArr);
+        byteBuffer.put(bodyArr);
+        byteBuffer.put(CRLF.getBytes(getCharset()));
+        return byteBuffer.array();
     }
 }
