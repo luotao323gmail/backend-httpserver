@@ -1,0 +1,23 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+            function sendAjax(){
+               $.ajax({
+                    url: "http://127.0.0.1:28080/login",
+                    data: JSON.stringify({"username":"zhangsan","password":"123"}),
+                    method: "post",
+                    dataType: "json",
+                    contentType: 'application/json',
+                    success: function (r) {
+        	            console.log(r)
+                    }
+                });
+            }
+
+    </script>
+</head>
+<body>
+<button onclick="sendAjax()">ajax</button>
+</body>
+</html>
