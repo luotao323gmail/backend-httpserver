@@ -15,12 +15,22 @@ public class HttpServiceCommand {
 
     private byte[] responseBytes;
 
-    private byte[] requestBytes;
+
+    private Request request;
 
     private Service httpService;
 
-    public HttpServiceCommand(byte[] requestBytes, Service httpService) {
-        this.requestBytes = requestBytes;
+
+
+    public Service getHttpService() {
+        return httpService;
+    }
+
+    public HttpServiceCommand(Request request) {
+        this.request = request;
+    }
+
+    public void setHttpService(Service httpService) {
         this.httpService = httpService;
     }
 
@@ -34,9 +44,8 @@ public class HttpServiceCommand {
 
     public void execute(){
         try{
-            Request httpRequest = Request.buildByHttpRequestBytes(requestBytes);
             Response httpResponse = new Response();
-            httpService.doPost(httpRequest,httpResponse);
+            httpService.doPost(request,httpResponse);
            this.responseBytes = httpResponse.buildResponse();
         }finally {
             isExecute.release();

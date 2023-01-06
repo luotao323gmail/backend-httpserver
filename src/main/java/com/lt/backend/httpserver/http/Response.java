@@ -19,6 +19,16 @@ public class Response {
         printWriter.println(str);
     }
 
+    private String contentType = "text/html";
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     public Charset getCharset(){
        return StandardCharsets.UTF_8;
     }
@@ -40,7 +50,7 @@ public class Response {
         sb.append(CRLF);
         sb.append("Connection:Close");
         sb.append(CRLF);
-        sb.append("Content-Type:text/html; charset=").append(getCharset().toString());
+        sb.append("Content-Type:").append(getContentType());
         sb.append(CRLF);
         sb.append("Content-Length: ").append(bytes.length);
         sb.append(CRLF);

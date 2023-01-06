@@ -7,7 +7,7 @@ public class Request {
 
     private byte[] htmlRequestByte;
 
-
+    private String requestUrl = "";
 
     private Map<String,String> headers = new LinkedHashMap<>();
 
@@ -16,10 +16,21 @@ public class Request {
         buildHeader();
     }
 
+    public String getRequestUrl() {
+        return requestUrl;
+    }
+
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
+    }
+
     public void buildHeader(){
         String ss = new String(htmlRequestByte);
         String[] arr = ss.split(System.lineSeparator());
-        for (int i = 0; i < arr.length; i++) {
+        String s1 = arr[0];
+        String[] split1 = s1.split("\\s");
+        requestUrl = split1[1];
+        for (int i = 1; i < arr.length; i++) {
             if(i==arr.length-1){
                 continue;
             }
@@ -31,6 +42,7 @@ public class Request {
                 System.out.println("error = " + s);
             }
         }
+        System.out.println("headers = " + headers);
     }
 
     public static Request buildByHttpRequestBytes(byte[] bytes){
