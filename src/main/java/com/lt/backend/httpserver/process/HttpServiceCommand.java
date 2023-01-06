@@ -54,7 +54,10 @@ public class HttpServiceCommand {
 
     public byte[] getResult(){
         try {
-            isExecute.tryAcquire(2, TimeUnit.SECONDS);
+            boolean b = isExecute.tryAcquire(2, TimeUnit.SECONDS);
+            if(!b){
+                System.out.println("timeout");
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
