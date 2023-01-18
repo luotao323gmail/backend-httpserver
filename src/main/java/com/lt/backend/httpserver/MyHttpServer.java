@@ -10,8 +10,11 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Stream;
 
 
 /**
@@ -81,13 +84,12 @@ public class MyHttpServer {
         client.configureBlocking(false);
         // 只需要注册READ操作
         SelectionKey clientKey = client.register(selector, SelectionKey.OP_READ);
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
         clientKey.attach(byteBuffer);
     }
 
     private void handleReadable(SelectionKey key) throws IOException {
 //        logger.info("handleReadable");
-
         SocketChannel client = (SocketChannel) key.channel();
         ByteBuffer byteBuffer = (ByteBuffer) key.attachment();
         byteBuffer.rewind();
@@ -95,11 +97,12 @@ public class MyHttpServer {
         if (n < 1) {
             return;
         }
-        // 打印HTTP请求报文出来
+
         byteBuffer.flip();
-        byte[] array = byteBuffer.array();
-        byte[] responseBody = HttpServiceFactory.executeHttpServer(array);
-       key.attach(responseBody);
+        byte[] requestBody = new byte[byteBuffer.limit()];
+        byteBuffer.get(requestBody);
+        byte[] responseBody = HttpServiceFactory.executeHttpServer(requestBody);
+        key.attach(responseBody);
     }
 
     private void handleWritable(SelectionKey key) throws IOException {
@@ -121,5 +124,7 @@ public class MyHttpServer {
     public static void main(String[] args) throws Exception {
         new MyHttpServer().exeute();
         System.in.read();
+
+
     }
 }

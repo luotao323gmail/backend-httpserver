@@ -45,8 +45,17 @@ public class HttpServiceCommand {
     public void execute(){
         try{
             Response httpResponse = new Response();
-            httpService.doPost(request,httpResponse);
-           this.responseBytes = httpResponse.buildResponse();
+            try {
+                if(request.isMethodGet()){
+                    httpService.doGet(request,httpResponse);
+                }else{
+                    httpService.doPost(request,httpResponse);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            this.responseBytes = httpResponse.buildResponse();
         }finally {
             isExecute.release();
         }

@@ -5,14 +5,20 @@ import java.util.Map;
 
 public class Request {
 
-    private byte[] htmlRequestByte;
+    private byte[] htmlContent;
+
+    private byte[] contentBytes;
 
     private String requestUrl = "";
 
-    private Map<String,String> headers = new LinkedHashMap<>();
+    private String queryString = "";
 
-    public Request(byte[] htmlRequestByte) {
-        this.htmlRequestByte = htmlRequestByte;
+    private String method;
+
+    private Map<String, String> headers = new LinkedHashMap<>();
+
+    private Request(byte[] contentBytes) {
+        this.contentBytes = contentBytes;
         buildHeader();
     }
 
@@ -24,32 +30,53 @@ public class Request {
         this.requestUrl = requestUrl;
     }
 
-    public void buildHeader(){
-        String ss = new String(htmlRequestByte);
+    public String getKeyUrl() {
+        return this.method + "." + requestUrl;
+    }
+
+    public boolean isMethodGet() {
+        return "GET".equalsIgnoreCase(this.method);
+    }
+
+    private void extractLine1(String line1) {
+        String[] split1 = line1.split("\\s");
+        method = split1[0].toUpperCase();
+        String s = split1[1];
+        int i = s.indexOf("?");
+        if (i > -1) {
+            requestUrl = s.substring(0, i);
+            queryString = s.substring(i);
+        } else {
+            requestUrl = split1[1];
+        }
+    }
+
+    public void buildHeader() {
+        String ss = new String(contentBytes);
         String[] arr = ss.split(System.lineSeparator());
-        String s1 = arr[0];
-        String[] split1 = s1.split("\\s");
-        requestUrl = split1[1];
+        extractLine1(arr[0]);
         for (int i = 1; i < arr.length; i++) {
-            if(i==arr.length-1){
+            if (i == arr.length - 1) {
                 continue;
             }
             String s = arr[i];
             String[] split = s.split(":");
-            if(split.length>1){
-                headers.put(split[0],split[1].trim());
-            }else{
+            if (split.length > 1) {
+                headers.put(split[0], split[1].trim());
+            } else {
                 System.out.println("error = " + s);
             }
         }
-        System.out.println("headers = " + headers);
+
     }
 
-    public static Request buildByHttpRequestBytes(byte[] bytes){
-        String str = new String(bytes);
-//        System.out.println("str = " + str);
+    public static Request buildByHttpRequestBytes(byte[] bytes) {
         Request httpRequest = new Request(bytes);
-
         return httpRequest;
+    }
+
+    @Override
+    public String toString() {
+        return new String(contentBytes);
     }
 }

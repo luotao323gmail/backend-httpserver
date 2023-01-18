@@ -1,21 +1,15 @@
 package com.lt.backend.httpserver.http;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
-public class ResponseTimeout extends Response{
+public class Response404 extends Response{
 
     @Override
     public int getHttpCode() {
-        return 501;
+        return 404;
     }
 
     @Override
     public String getHttpMessage() {
-        return "timeout";
+        return "NOT FOUND";
     }
 
     @Override
