@@ -40,7 +40,13 @@ public class Request {
 
     private void extractLine1(String line1) {
         String[] split1 = line1.split("\\s");
+        if (split1.length < 2) {
+            System.err.println("ERROR:[" + line1+"]");
+            System.err.println("ERRORbody :[" + new String(contentBytes)+"]");
+            return;
+        }
         method = split1[0].toUpperCase();
+
         String s = split1[1];
         int i = s.indexOf("?");
         if (i > -1) {

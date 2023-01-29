@@ -4,10 +4,6 @@ import com.lt.backend.httpserver.http.Request;
 import com.lt.backend.httpserver.http.Response;
 import com.lt.backend.httpserver.http.Service;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-
 public class IndexService implements Service {
 
     @Override

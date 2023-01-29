@@ -15,7 +15,7 @@ public class HttpServiceFactory {
 
     public static final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
 
-    public static Map<String, Service> serviceMap = findService();
+    public static final Map<String, Service> serviceMap = findService();
 
     public static byte[] executeHttpServer(byte[] httpRequestBytes) {
         Request request = Request.buildByHttpRequestBytes(httpRequestBytes);
