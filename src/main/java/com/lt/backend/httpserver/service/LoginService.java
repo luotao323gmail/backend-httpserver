@@ -45,7 +45,7 @@ public class LoginService implements Service {
 //        int ms = calendar.get(Calendar.MILLISECOND);
 //        String time = year+"-"+month+"-"+day+"-";
         Date date = new Date();
-        SimpleDateFormat dateInstance = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss_sss");
+        SimpleDateFormat dateInstance = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss_SSS");
         String dateStr = dateInstance.format(date);
 
 
