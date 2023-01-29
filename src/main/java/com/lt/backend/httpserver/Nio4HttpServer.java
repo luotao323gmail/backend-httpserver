@@ -36,7 +36,7 @@ public class Nio4HttpServer {
                             try {
                                 socket.close();
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                error.accept(e);
                             }
                             return;
                         }
@@ -69,7 +69,7 @@ public class Nio4HttpServer {
                                 try {
                                     socket.close();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    error.accept(e);
                                 }
                             }
 
