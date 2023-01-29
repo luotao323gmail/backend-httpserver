@@ -13,7 +13,7 @@ import com.lt.backend.httpserver.process.HttpServiceFactory;
 
 public class Nio4HttpServer {
 
-    private static final int DEFAULT_PORT = 18084;
+    private static final int DEFAULT_PORT = 80;
     private static final int TIMEOUT = 5000;
 
     public static void server(Consumer<Throwable> error) throws IOException {

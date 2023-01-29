@@ -2,6 +2,8 @@ package com.lt.backend.httpserver.service;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.stream.Stream;
@@ -32,9 +34,23 @@ public class LoginService implements Service {
         // context.setVariable("name", "lisi");
         // // 调用引擎，处理模板和数据
         // String result = engine.process(html.toString(), context);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(new Date());
+//        int year = calendar.get(Calendar.YEAR);
+//        int month = calendar.get(Calendar.MONTH);
+//        int day = calendar.get(Calendar.DAY_OF_MONTH);
+//        int hh = calendar.get(Calendar.HOUR_OF_DAY);
+//        int mm = calendar.get(Calendar.MINUTE);
+//        int ss = calendar.get(Calendar.SECOND);
+//        int ms = calendar.get(Calendar.MILLISECOND);
+//        String time = year+"-"+month+"-"+day+"-";
+        Date date = new Date();
+        SimpleDateFormat dateInstance = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss_sss");
+        String dateStr = dateInstance.format(date);
 
-        response.println(String.format(html, new Date().toString()));
-        System.out.println("login html");
+
+        response.println(String.format(html, dateStr));
+        System.out.println("("+dateStr+") req:"+request);
     }
 
     @Override
